@@ -5,6 +5,7 @@
   import projects from "../../data/projects";
 
   export default {
+    props: ["limit"],
     components: { ProjectSingle, ProjectsFilter },
     data: () => {
       return {
@@ -17,12 +18,17 @@
     computed: {
       // Get the filtered projects
       filteredProjects() {
+        let projectsArr = projects.slice().reverse();
         if (this.selectedCategory) {
-          return this.filterProjectsByCategory();
+          projectsArr.push(this.filterProjectsByCategory());
         } else if (this.searchProject) {
-          return this.filterProjectsBySearch();
+          projectsArr.push(this.filterProjectsBySearch());
         }
-        return this.projects;
+        if (this.limit) {
+          console.log("LMIT JASDKJASJK",this.limit);
+          projectsArr = projectsArr.slice(0, this.limit);
+        }
+        return projectsArr;
       },
     },
     methods: {
